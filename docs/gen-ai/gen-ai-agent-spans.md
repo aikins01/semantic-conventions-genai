@@ -170,7 +170,7 @@ and SHOULD be provided **at span creation time** (if provided at all):
 | `gcp.vertex_ai` | [Vertex AI](https://cloud.google.com/vertex-ai) [12] | ![Development](https://img.shields.io/badge/-development-blue) |
 | `groq` | [Groq](https://groq.com/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `ibm.watsonx.ai` | [IBM Watsonx AI](https://www.ibm.com/products/watsonx-ai) | ![Development](https://img.shields.io/badge/-development-blue) |
-| `mistral_ai` | [Mistral AI](https://mistral.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
+| `mistral` | [Mistral](https://mistral.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `moonshot_ai` | [Moonshot AI](https://www.moonshot.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `openai` | [OpenAI](https://openai.com/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `perplexity` | [Perplexity](https://www.perplexity.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
@@ -405,6 +405,11 @@ output messages. `gen_ai.response.finish_reasons` remains aligned with the
 generations returned by the provider, not with a filtered or truncated
 `gen_ai.output.messages` value.
 
+When an operation ends in an error, this attribute SHOULD only be set
+when the operation produced output, including partial streamed output.
+Instrumentation SHOULD NOT synthesize output content for a failed
+operation.
+
 > [!Warning]
 > This attribute is likely to contain sensitive information including user/PII data.
 
@@ -521,7 +526,7 @@ and SHOULD be provided **at span creation time** (if provided at all):
 | `gcp.vertex_ai` | [Vertex AI](https://cloud.google.com/vertex-ai) [36] | ![Development](https://img.shields.io/badge/-development-blue) |
 | `groq` | [Groq](https://groq.com/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `ibm.watsonx.ai` | [IBM Watsonx AI](https://www.ibm.com/products/watsonx-ai) | ![Development](https://img.shields.io/badge/-development-blue) |
-| `mistral_ai` | [Mistral AI](https://mistral.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
+| `mistral` | [Mistral](https://mistral.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `moonshot_ai` | [Moonshot AI](https://www.moonshot.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `openai` | [OpenAI](https://openai.com/) | ![Development](https://img.shields.io/badge/-development-blue) |
 | `perplexity` | [Perplexity](https://www.perplexity.ai/) | ![Development](https://img.shields.io/badge/-development-blue) |
@@ -689,6 +694,11 @@ Instrumentations MAY provide a way for users to filter or truncate
 output messages. `gen_ai.response.finish_reasons` remains aligned with the
 generations returned by the provider, not with a filtered or truncated
 `gen_ai.output.messages` value.
+
+When an operation ends in an error, this attribute SHOULD only be set
+when the operation produced output, including partial streamed output.
+Instrumentation SHOULD NOT synthesize output content for a failed
+operation.
 
 > [!Warning]
 > This attribute is likely to contain sensitive information including user/PII data.
@@ -913,6 +923,11 @@ Instrumentations MAY provide a way for users to filter or truncate
 output messages. `gen_ai.response.finish_reasons` remains aligned with the
 generations returned by the provider, not with a filtered or truncated
 `gen_ai.output.messages` value.
+
+When an operation ends in an error, this attribute SHOULD only be set
+when the operation produced output, including partial streamed output.
+Instrumentation SHOULD NOT synthesize output content for a failed
+operation.
 
 > [!Warning]
 > This attribute is likely to contain sensitive information including user/PII data.
