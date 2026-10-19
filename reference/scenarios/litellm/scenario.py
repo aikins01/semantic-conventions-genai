@@ -149,23 +149,44 @@ def run_responses_cost_breakdown():
             api_base=MOCK_BASE_URL,
             api_key="mock-key",
         )
-        span.set_attribute("gen_ai.response.model", resp.model)
-        span.set_attribute("gen_ai.response.id", resp.id)
+        # Every value set on the span is also kept for the details event so the two stay
+        # identical. The span is written at each step, so a later failure keeps earlier values.
+        response_attrs = {"gen_ai.response.model": resp.model, "gen_ai.response.id": resp.id}
+        span.set_attributes(response_attrs)
         usage = ResponseAPILoggingUtils._transform_response_api_usage_to_chat_usage(resp.usage)
-        span.set_attribute("gen_ai.usage.input_tokens", usage.prompt_tokens)
-        span.set_attribute("gen_ai.usage.output_tokens", usage.completion_tokens)
-        span.set_attribute("gen_ai.usage.cache_read.input_tokens", usage.prompt_tokens_details.cached_tokens)
-        span.set_attribute("gen_ai.usage.cache_write.input_tokens", usage.prompt_tokens_details.cache_creation_tokens)
-        span.set_attribute("gen_ai.usage.reasoning.output_tokens", usage.completion_tokens_details.reasoning_tokens)
+        usage_attrs = {
+            "gen_ai.usage.input_tokens": usage.prompt_tokens,
+            "gen_ai.usage.output_tokens": usage.completion_tokens,
+            "gen_ai.usage.cache_read.input_tokens": usage.prompt_tokens_details.cached_tokens,
+            "gen_ai.usage.cache_write.input_tokens": usage.prompt_tokens_details.cache_creation_tokens,
+            "gen_ai.usage.reasoning.output_tokens": usage.completion_tokens_details.reasoning_tokens,
+        }
+        span.set_attributes(usage_attrs)
+        response_attrs.update(usage_attrs)
 
         # LiteLLM computes the total from its pricing table. Its prompt cost includes cache
         # reads and writes and its completion cost includes reasoning, so subtract those to
         # keep the classes disjoint.
         response_cost = resp._hidden_params.get("response_cost")
         if response_cost is not None:
-            span.set_attribute("gen_ai.usage.cost.amount", response_cost)
-            span.set_attribute("gen_ai.usage.cost.currency", "USD")
-            span.set_attribute("gen_ai.usage.cost.source", "local")
+            cost_attrs = {
+                "gen_ai.usage.cost.amount": response_cost,
+                "gen_ai.usage.cost.currency": "USD",
+                "gen_ai.usage.cost.source": "local",
+            }
+            span.set_attributes(cost_attrs)
+            response_attrs.update(cost_attrs)
+            _cost_histogram.record(
+                response_cost,
+                attributes={
+                    "gen_ai.operation.name": "chat",
+                    "gen_ai.provider.name": provider_name,
+                    "gen_ai.request.model": request_model,
+                    "gen_ai.response.model": resp.model,
+                    "gen_ai.usage.cost.currency": "USD",
+                    "gen_ai.usage.cost.source": "local",
+                },
+            )
             prompt_cost, completion_cost = litellm.cost_per_token(
                 model=request_model, custom_llm_provider=provider_name, usage_object=usage
             )
@@ -184,9 +205,15 @@ def run_responses_cost_breakdown():
                     "gen_ai.usage.cost.output": completion_cost - token_classes.reasoning_cost,
                     "gen_ai.usage.cost.reasoning": token_classes.reasoning_cost,
                 }
-                for key, value in cost_classes.items():
-                    if value > 0:
-                        span.set_attribute(key, value)
+                class_attrs = {key: value for key, value in cost_classes.items() if value > 0}
+                span.set_attributes(class_attrs)
+                response_attrs.update(class_attrs)
+
+        reference_event_logger().emit(
+            event_name="gen_ai.client.inference.operation.details",
+            body="Inference operation details",
+            attributes={**span_attributes, **response_attrs},
+        )
         print(f"    -> cost: {response_cost}")
 
 
