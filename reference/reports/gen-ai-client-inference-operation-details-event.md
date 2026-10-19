@@ -49,6 +49,11 @@
 | gen_ai.usage.cache_read.input_tokens | [anthropic], [google-genai], [openai], [vertexai] |
 | gen_ai.usage.cache_write.input_tokens | [anthropic], [openai] |
 | gen_ai.usage.cost.amount | (none) |
+| gen_ai.usage.cost.cache_read | (none) |
+| gen_ai.usage.cost.cache_write | (none) |
+| gen_ai.usage.cost.input | (none) |
+| gen_ai.usage.cost.output | (none) |
+| gen_ai.usage.cost.reasoning | (none) |
 | gen_ai.usage.image.cache_read.input_tokens | [google-genai], [vertexai] |
 | gen_ai.usage.image.input_tokens | [google-genai], [vertexai] |
 | gen_ai.usage.image.output_tokens | [google-genai] |

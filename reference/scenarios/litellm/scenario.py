@@ -1,10 +1,11 @@
 """Reference implementation for LiteLLM.
 
-Exercises: chat, chat_streaming, chat_tool_call, embeddings
+Exercises: chat, responses, chat_streaming, chat_tool_call, embeddings
 against a mock OpenAI server, with manual OTel spans.
 """
 
 import json
+import math
 import os
 
 from reference_shared import flush_and_shutdown, reference_event_logger, reference_meter, reference_tracer, setup_otel
@@ -123,6 +124,70 @@ def run_chat():
         )
 
         print(f"    -> {resp.choices[0].message.content[:60]}")
+
+
+def run_responses_cost_breakdown():
+    """Scenario: Responses API call whose usage includes cache and reasoning tokens."""
+    import litellm
+    from litellm.litellm_core_utils.llm_cost_calc.utils import get_token_type_cost_breakdown
+    from litellm.responses.utils import ResponseAPILoggingUtils
+
+    print("  [responses] Responses API call via LiteLLM with per-class cost (reference implementation)")
+    request_model = "gpt-4o-mini"
+    litellm_model = f"openai/{request_model}"
+    provider_name = _provider_name(litellm_model)
+    request_messages = [{"role": "user", "content": "Say hello."}]
+    span_attributes = {
+        "gen_ai.operation.name": "chat",
+        "gen_ai.provider.name": provider_name,
+        "gen_ai.request.model": request_model,
+    }
+    with _reference_tracer.start_as_current_span("chat gpt-4o-mini", attributes=span_attributes) as span:
+        resp = litellm.responses(
+            model=litellm_model,
+            input=request_messages,
+            api_base=MOCK_BASE_URL,
+            api_key="mock-key",
+        )
+        span.set_attribute("gen_ai.response.model", resp.model)
+        span.set_attribute("gen_ai.response.id", resp.id)
+        usage = ResponseAPILoggingUtils._transform_response_api_usage_to_chat_usage(resp.usage)
+        span.set_attribute("gen_ai.usage.input_tokens", usage.prompt_tokens)
+        span.set_attribute("gen_ai.usage.output_tokens", usage.completion_tokens)
+        span.set_attribute("gen_ai.usage.cache_read.input_tokens", usage.prompt_tokens_details.cached_tokens)
+        span.set_attribute("gen_ai.usage.cache_write.input_tokens", usage.prompt_tokens_details.cache_creation_tokens)
+        span.set_attribute("gen_ai.usage.reasoning.output_tokens", usage.completion_tokens_details.reasoning_tokens)
+
+        # LiteLLM computes the total from its pricing table. Its prompt cost includes cache
+        # reads and writes and its completion cost includes reasoning, so subtract those to
+        # keep the classes disjoint.
+        response_cost = resp._hidden_params.get("response_cost")
+        if response_cost is not None:
+            span.set_attribute("gen_ai.usage.cost.amount", response_cost)
+            span.set_attribute("gen_ai.usage.cost.currency", "USD")
+            span.set_attribute("gen_ai.usage.cost.source", "local")
+            prompt_cost, completion_cost = litellm.cost_per_token(
+                model=request_model, custom_llm_provider=provider_name, usage_object=usage
+            )
+            # The classes are only a breakdown of the amount if LiteLLM applied no discount
+            # or margin on top of its token costs.
+            if math.isclose(prompt_cost + completion_cost, response_cost):
+                token_classes = get_token_type_cost_breakdown(
+                    model=request_model, custom_llm_provider=provider_name, usage=usage
+                )
+                cost_classes = {
+                    "gen_ai.usage.cost.input": prompt_cost
+                    - token_classes.cache_read_cost
+                    - token_classes.cache_creation_cost,
+                    "gen_ai.usage.cost.cache_read": token_classes.cache_read_cost,
+                    "gen_ai.usage.cost.cache_write": token_classes.cache_creation_cost,
+                    "gen_ai.usage.cost.output": completion_cost - token_classes.reasoning_cost,
+                    "gen_ai.usage.cost.reasoning": token_classes.reasoning_cost,
+                }
+                for key, value in cost_classes.items():
+                    if value > 0:
+                        span.set_attribute(key, value)
+        print(f"    -> cost: {response_cost}")
 
 
 def run_chat_streaming():
@@ -287,6 +352,7 @@ def main():
     # NO instrument() call - reference implementation only
 
     run_chat()
+    run_responses_cost_breakdown()
     run_chat_streaming()
     run_chat_tool_call()
     run_embeddings()

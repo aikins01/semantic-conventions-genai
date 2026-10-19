@@ -1160,6 +1160,23 @@ attributes:
       Different spans in the same trace MAY have different `cost.source`
       values. Consumers summing cost across a trace should expect a mix of
       provider-reported and locally-computed values.
+
+      The amount MAY be broken down into `gen_ai.usage.cost.input`,
+      `gen_ai.usage.cost.cache_read`, `gen_ai.usage.cost.cache_write`,
+      `gen_ai.usage.cost.output`, and `gen_ai.usage.cost.reasoning`. Each class
+      is a portion of the amount, priced the same way and in the same currency,
+      so a class MUST NOT be set without the amount. The classes are disjoint
+      even though the token counts they price are nested (for example,
+      `gen_ai.usage.cache_read.input_tokens` is included in
+      `gen_ai.usage.input_tokens`): the cost of a token MUST be included in at
+      most one class. The sum of the classes that are set therefore does not
+      exceed the amount; the difference is cost not attributed to a set class,
+      such as an unpriced class or a charge that is not per token. When the
+      cost of a class cannot be separated from the amount, instrumentations
+      MUST NOT set it.
+
+      Consumers MUST NOT derive a class that is not set, and MUST NOT
+      recompute a class that is set from token counts and pricing data.
     examples: [0.0023, 0.015, 0.42]
     stability: development
   - key: gen_ai.usage.cost.currency
@@ -1201,4 +1218,48 @@ attributes:
       Distinguishes cost values received in the response from cost values
       computed at recording time by the emitting component. See the enum
       member notes for the receive-vs-derive test.
+    stability: development
+  - key: gen_ai.usage.cost.input
+    type: double
+    brief: The cost of input tokens other than cache reads and cache writes.
+    note: |
+      Excludes cache reads and cache writes even when
+      `gen_ai.usage.cache_read.input_tokens` and
+      `gen_ai.usage.cache_write.input_tokens` are not recorded.
+      See `gen_ai.usage.cost.amount` for the rules shared by all cost classes.
+    examples: [0.0006]
+    stability: development
+  - key: gen_ai.usage.cost.cache_read
+    type: double
+    brief: The cost of input tokens served from a provider-managed cache.
+    note: |
+      Prices `gen_ai.usage.cache_read.input_tokens`.
+      See `gen_ai.usage.cost.amount` for the rules shared by all cost classes.
+    examples: [0.00045]
+    stability: development
+  - key: gen_ai.usage.cost.cache_write
+    type: double
+    brief: The cost of input tokens written to a provider-managed cache.
+    note: |
+      Prices `gen_ai.usage.cache_write.input_tokens`.
+      See `gen_ai.usage.cost.amount` for the rules shared by all cost classes.
+    examples: [0.01125]
+    stability: development
+  - key: gen_ai.usage.cost.output
+    type: double
+    brief: The cost of output tokens other than reasoning tokens.
+    note: |
+      Excludes reasoning tokens even when
+      `gen_ai.usage.reasoning.output_tokens` is not recorded.
+      See `gen_ai.usage.cost.amount` for the rules shared by all cost classes.
+    examples: [0.0003]
+    stability: development
+  - key: gen_ai.usage.cost.reasoning
+    type: double
+    brief: The cost of output tokens used for reasoning.
+    note: |
+      Prices `gen_ai.usage.reasoning.output_tokens`, even when the provider
+      bills them at the output rate.
+      See `gen_ai.usage.cost.amount` for the rules shared by all cost classes.
+    examples: [0.0009]
     stability: development

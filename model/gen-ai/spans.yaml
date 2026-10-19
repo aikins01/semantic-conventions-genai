@@ -55,6 +55,25 @@ attribute_groups:
         requirement_level:
           conditionally_required: If `gen_ai.usage.cost.amount` is set.
 
+  - id: attributes.gen_ai.usage.cost.breakdown
+    visibility: internal
+    attributes:
+      - ref: gen_ai.usage.cost.input
+        requirement_level:
+          recommended: When priced and non-zero.
+      - ref: gen_ai.usage.cost.cache_read
+        requirement_level:
+          recommended: When priced and non-zero.
+      - ref: gen_ai.usage.cost.cache_write
+        requirement_level:
+          recommended: When priced and non-zero.
+      - ref: gen_ai.usage.cost.output
+        requirement_level:
+          recommended: When priced and non-zero.
+      - ref: gen_ai.usage.cost.reasoning
+        requirement_level:
+          recommended: When priced and non-zero.
+
   - id: attributes.gen_ai.usage.breakdown
     visibility: internal
     attributes:
@@ -202,6 +221,7 @@ spans:
       - ref_group: attributes.gen_ai.address_and_port
       - ref_group: attributes.gen_ai.usage
       - ref_group: attributes.gen_ai.usage.cost
+      - ref_group: attributes.gen_ai.usage.cost.breakdown
       - ref_group: attributes.gen_ai.usage.breakdown
       - ref_group: attributes.gen_ai.content
       - ref_group: attributes.gen_ai.error
