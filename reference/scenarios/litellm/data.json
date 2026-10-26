@@ -83,7 +83,9 @@
       "gen_ai.request.model",
       "gen_ai.response.model",
       "gen_ai.usage.cost.currency",
-      "gen_ai.usage.cost.source"
+      "gen_ai.usage.cost.source",
+      "server.address",
+      "server.port"
     ]
   },
   "findings": [],

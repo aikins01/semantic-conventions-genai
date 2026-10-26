@@ -15,7 +15,7 @@
 | Attribute | Supporting Libraries |
 | --- | --- |
 | gen_ai.request.model | [litellm] |
-| server.port | (none) |
+| server.port | [litellm] |
 
 ## Recommended
 
@@ -23,6 +23,6 @@
 | --- | --- |
 | gen_ai.response.model | [litellm] |
 | gen_ai.usage.cost.source | [litellm] |
-| server.address | (none) |
+| server.address | [litellm] |
 
 [litellm]: ../scenarios/litellm/scenario.py

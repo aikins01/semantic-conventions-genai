@@ -15,6 +15,7 @@ from reference_shared import flush_and_shutdown, reference_event_logger, referen
 
 MOCK_BASE_URL = os.environ["MOCK_LLM_URL"] + "/v1"
 _SERVER_ADDRESS = urlparse(os.environ["MOCK_LLM_URL"]).hostname
+_SERVER_PORT = urlparse(os.environ["MOCK_LLM_URL"]).port
 
 _reference_tracer = reference_tracer()
 _reference_meter = reference_meter()
@@ -140,6 +141,9 @@ def run_chat():
                     "gen_ai.operation.name": "chat",
                     "gen_ai.provider.name": provider_name,
                     "gen_ai.request.model": request_model,
+                    "gen_ai.response.model": resp.model,
+                    "server.address": _SERVER_ADDRESS,
+                    "server.port": _SERVER_PORT,
                     "gen_ai.usage.cost.currency": "USD",
                     "gen_ai.usage.cost.source": "local",
                 },
@@ -243,6 +247,8 @@ def run_responses_cost_breakdown():
                     "gen_ai.provider.name": provider_name,
                     "gen_ai.request.model": request_model,
                     "gen_ai.response.model": resp.model,
+                    "server.address": _SERVER_ADDRESS,
+                    "server.port": _SERVER_PORT,
                     "gen_ai.usage.cost.currency": "USD",
                     "gen_ai.usage.cost.source": "local",
                 },
