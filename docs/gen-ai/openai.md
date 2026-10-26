@@ -86,26 +86,26 @@ and MUST follow the overall [guidelines for span names](https://github.com/open-
 | [`gen_ai.response.id`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | string | The unique identifier for the completion. | `chatcmpl-123` |
 | [`gen_ai.response.model`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | string | The name of the model that generated the response. [22] | `gpt-4-0613` |
 | [`gen_ai.response.time_to_first_chunk`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` If the request was a streaming request. | double | Time to first chunk in a streaming response, measured from request issuance, in seconds. The value is measured from when the client issues the generation request to when the first chunk is received in the response stream. | `0.5`; `1.2` |
-| [`gen_ai.usage.audio.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of audio input tokens served from a provider-managed cache. [23] | `60` |
-| [`gen_ai.usage.audio.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of audio input tokens. [24] | `120` |
-| [`gen_ai.usage.audio.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of audio output tokens. [25] | `240` |
-| [`gen_ai.usage.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of input tokens served from a provider-managed cache. [26] | `50` |
-| [`gen_ai.usage.cache_write.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of input tokens written to a provider-managed cache. [27] | `25` |
+| [`gen_ai.usage.audio.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of audio input tokens served from a provider-managed cache. [23] | `60` |
+| [`gen_ai.usage.audio.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of audio input tokens. [24] | `120` |
+| [`gen_ai.usage.audio.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of audio output tokens. [25] | `240` |
+| [`gen_ai.usage.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of input tokens served from a provider-managed cache. [26] | `50` |
+| [`gen_ai.usage.cache_write.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of input tokens written to a provider-managed cache. [27] | `25` |
 | [`gen_ai.usage.cost.amount`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | double | The monetary cost of a single GenAI operation. [28] | `0.0023`; `0.015`; `0.42` |
 | [`gen_ai.usage.cost.cache_read`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When priced and non-zero. | double | The cost of input tokens served from a provider-managed cache. [29] | `0.00045` |
 | [`gen_ai.usage.cost.cache_write`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When priced and non-zero. | double | The cost of input tokens written to a provider-managed cache. [30] | `0.01125` |
 | [`gen_ai.usage.cost.input`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When priced and non-zero. | double | The cost of input tokens other than cache reads and cache writes. [31] | `0.0006` |
 | [`gen_ai.usage.cost.output`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When priced and non-zero. | double | The cost of output tokens other than reasoning tokens. [32] | `0.0003` |
 | [`gen_ai.usage.cost.reasoning`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When priced and non-zero. | double | The cost of output tokens used for reasoning. [33] | `0.0009` |
-| [`gen_ai.usage.image.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of image input tokens served from a provider-managed cache. [34] | `128` |
-| [`gen_ai.usage.image.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of image input tokens. [35] | `258` |
-| [`gen_ai.usage.image.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of image output tokens. [36] | `1290` |
+| [`gen_ai.usage.image.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of image input tokens served from a provider-managed cache. [34] | `128` |
+| [`gen_ai.usage.image.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of image input tokens. [35] | `258` |
+| [`gen_ai.usage.image.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of image output tokens. [36] | `1290` |
 | [`gen_ai.usage.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | int | The number of tokens used in the GenAI input (prompt). [37] | `100` |
 | [`gen_ai.usage.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | int | The number of tokens used in the GenAI response (completion). [38] | `180` |
-| [`gen_ai.usage.reasoning.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of output tokens used for reasoning (e.g. chain-of-thought, extended thinking). [39] | `50` |
-| [`gen_ai.usage.text.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of text input tokens served from a provider-managed cache. [40] | `40` |
-| [`gen_ai.usage.text.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of text input tokens. [41] | `100` |
-| [`gen_ai.usage.text.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When applicable. | int | The number of text output tokens. [42] | `180` |
+| [`gen_ai.usage.reasoning.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of output tokens used for reasoning (e.g. chain-of-thought, extended thinking). [39] | `50` |
+| [`gen_ai.usage.text.cache_read.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of text input tokens served from a provider-managed cache. [40] | `40` |
+| [`gen_ai.usage.text.input_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of text input tokens. [41] | `100` |
+| [`gen_ai.usage.text.output_tokens`](/docs/registry/attributes/gen-ai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` When available and non-zero. | int | The number of text output tokens. [42] | `180` |
 | [`openai.api.type`](/docs/registry/attributes/openai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | string | The type of OpenAI API being used. | `chat_completions`; `responses` |
 | [`openai.response.system_fingerprint`](/docs/registry/attributes/openai.md) | ![Development](https://img.shields.io/badge/-development-blue) | `Recommended` | string | A fingerprint to track any eventual change in the Generative AI environment. | `fp_44709d6fcb` |
 | [`server.address`](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/registry/attributes/server.md) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Recommended` | string | GenAI server address. [43] | `example.com`; `10.1.2.80`; `/tmp/my.sock` |
@@ -506,7 +506,7 @@ indistinguishable; the value is passed through unmodified.
 
 ### Embeddings
 
-See [common embeddings span definition](./gen-ai-spans.md#embeddings).
+See [common embeddings span definition](./client-embeddings.md#span-gen_aiclientembeddings).
 
 ### Fetch response
 
@@ -710,7 +710,8 @@ Reports the usage of input tokens following the common [gen_ai.client.inference.
 
 **[1]:** This metric SHOULD be reported when an operation involves the usage of tokens and the count is readily available.
 When systems report both used tokens and billable tokens, instrumentation MUST report billable tokens.
-Instrumentations SHOULD record this metric for each inference operation, including failed ones. The recorded value SHOULD match the token count returned by the provider, or `0` if the response was not received or did not contain token usage. When no usage is received, the `0` is recorded with `gen_ai.token.modality` set to `unknown`.
+Instrumentation SHOULD record contributions from successful and failed inference operations. Each measurement MUST be a known, strictly positive modality contribution.
+When a contribution's modality cannot reliably be determined, instrumentation MUST set `gen_ai.token.modality` to `unknown`.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
@@ -842,7 +843,8 @@ Reports the usage of output tokens following the common [gen_ai.client.inference
 
 **[1]:** This metric SHOULD be reported when an operation involves the usage of tokens and the count is readily available.
 When systems report both used tokens and billable tokens, instrumentation MUST report billable tokens.
-Instrumentations SHOULD record this metric for each inference operation, including failed ones. The recorded value SHOULD match the token count returned by the provider, or `0` if the response was not received or did not contain token usage. When no usage is received, the `0` is recorded with `gen_ai.token.modality` set to `unknown`.
+Instrumentation SHOULD record contributions from successful and failed inference operations. Each measurement MUST be a known, strictly positive modality contribution.
+When a contribution's modality cannot reliably be determined, instrumentation MUST set `gen_ai.token.modality` to `unknown`.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
@@ -973,7 +975,8 @@ Reports the usage of cached input tokens following the common [gen_ai.client.inf
 | `gen_ai.client.inference.usage.cache_read.input_tokens` | Counter | `{token}` | OpenAI-specific extension to `gen_ai.client.inference.usage.cache_read.input_tokens`. Adds `openai.response.service_tier` and `openai.response.system_fingerprint` when the provider is `openai`. [1] | ![Development](https://img.shields.io/badge/-development-blue) | |
 
 **[1]:** This value is a subset of `gen_ai.client.inference.usage.input_tokens`.
-Instrumentations SHOULD record this metric for each inference operation, including failed ones. The recorded value SHOULD match the token count returned by the provider, or `0` if the response was not received or did not contain token usage.
+Instrumentation SHOULD record contributions from successful and failed inference operations. Each measurement MUST be a known, strictly positive modality contribution.
+When a contribution's modality cannot reliably be determined, instrumentation MUST set `gen_ai.token.modality` to `unknown`.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
@@ -1104,7 +1107,8 @@ Reports the usage of input tokens written to a provider-managed cache following 
 | `gen_ai.client.inference.usage.cache_write.input_tokens` | Counter | `{token}` | OpenAI-specific extension to `gen_ai.client.inference.usage.cache_write.input_tokens`. Adds `openai.response.service_tier` and `openai.response.system_fingerprint` when the provider is `openai`. [1] | ![Development](https://img.shields.io/badge/-development-blue) | |
 
 **[1]:** This value is a subset of `gen_ai.client.inference.usage.input_tokens`.
-Instrumentations SHOULD record this metric for each inference operation, including failed ones. The recorded value SHOULD match the token count returned by the provider, or `0` if the response was not received or did not contain token usage.
+Instrumentation SHOULD record contributions from successful and failed inference operations. Each measurement MUST be a known, strictly positive modality contribution.
+When a contribution's modality cannot reliably be determined, instrumentation MUST set `gen_ai.token.modality` to `unknown`.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
@@ -1235,7 +1239,8 @@ Reports the usage of reasoning output tokens following the common [gen_ai.client
 | `gen_ai.client.inference.usage.reasoning.output_tokens` | Counter | `{token}` | OpenAI-specific extension to `gen_ai.client.inference.usage.reasoning.output_tokens`. Adds `openai.response.service_tier` and `openai.response.system_fingerprint` when the provider is `openai`. [1] | ![Development](https://img.shields.io/badge/-development-blue) | |
 
 **[1]:** This value is a subset of `gen_ai.client.inference.usage.output_tokens`.
-Instrumentations SHOULD record this metric for each inference operation, including failed ones. The recorded value SHOULD match the token count returned by the provider, or `0` if the response was not received or did not contain token usage.
+Instrumentation SHOULD record contributions from successful and failed inference operations. Each measurement MUST be a known, strictly positive modality contribution.
+When a contribution's modality cannot reliably be determined, instrumentation MUST set `gen_ai.token.modality` to `unknown`.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
@@ -1631,7 +1636,7 @@ Measures the to complete an operation following the common [gen_ai.client.operat
 | -------- | --------------- | ----------- | -------------- | --------- | ------ |
 | `gen_ai.client.operation.duration` | Histogram | `s` | OpenAI-specific extension to `gen_ai.client.operation.duration`. Adds `openai.response.service_tier` and `openai.response.system_fingerprint` when the provider is `openai`. [1] | ![Development](https://img.shields.io/badge/-development-blue) | |
 
-**[1]:** This metric SHOULD NOT be reported for inference operations; use `gen_ai.client.inference.duration` instead.
+**[1]:** This metric SHOULD NOT be reported for inference or embeddings operations; use `gen_ai.client.inference.duration` or `gen_ai.client.embeddings.duration` instead.
 
 **Requirement level:** [Recommended](https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/signal-requirement-level.md).
 
