@@ -105,10 +105,11 @@ def _patch_automatic_function_calling():
                         # Only the exception message survives, so no class name is available.
                         tool_span.set_attribute("error.type", "_OTHER")
                         tool_span.set_status(StatusCode.ERROR, func_response["error"])
-                        tool_call_result = {"type": "value", "content": func_response, "is_error": True}
                     else:
-                        tool_call_result = {"type": "value", "content": func_response["result"]}
-                    tool_span.set_attribute("gen_ai.tool.call.result", json.dumps(tool_call_result))
+                        tool_span.set_attribute(
+                            "gen_ai.tool.call.result",
+                            json.dumps({"type": "value", "content": func_response["result"]}),
+                        )
                 parts.extend(result_parts)
         return parts
 

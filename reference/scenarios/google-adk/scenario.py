@@ -473,13 +473,14 @@ def run_skills_reference():
                 # `direct`: every skill tool reports a failure as an `error_code` on
                 # its result, which is the value ADK's own telemetry hook reads too.
                 error_type = result.get("error_code") if isinstance(result, dict) else None
-                tool_call_result = {"type": "value", "content": result}
                 if error_type:
                     span.set_attribute("error.type", error_type)
                     span.set_status(StatusCode.ERROR, result.get("error", ""))
-                    # The failed result is still what ADK returns to the model.
-                    tool_call_result["is_error"] = True
-                span.set_attribute("gen_ai.tool.call.result", json.dumps(tool_call_result, default=str))
+                else:
+                    span.set_attribute(
+                        "gen_ai.tool.call.result",
+                        json.dumps({"type": "value", "content": result}, default=str),
+                    )
                 self._record_skill_signals(span, args, result, error_type, tool_context)
                 return result
 

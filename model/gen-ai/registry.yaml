@@ -567,7 +567,7 @@ attributes:
     stability: development
   - key: gen_ai.tool.call.result
     type: any
-    brief: The result returned by the tool call, if any.
+    brief: The result returned by the tool call (if any and if execution was successful).
     annotations:
       type:
         json_schema: model/gen-ai/gen-ai-tool-call-result.json
@@ -581,13 +581,6 @@ attributes:
       Instrumentations SHOULD NOT parse a string the tool returned. When only
       a serialized form of a non-string value is available, the
       instrumentation SHOULD make a best effort to deserialize it.
-
-      When the tool, or the instrumented code that calls it, reports a
-      failure as the result, for example by returning an error message to
-      the model, the instrumentation SHOULD record that result and set
-      `is_error` to `true`. When no result is returned, for example because
-      an exception propagates out of the instrumented code, this attribute
-      SHOULD NOT be set.
 
       Consumers SHOULD tolerate `type` values they do not recognize; new
       result types may be added in the future.
@@ -606,8 +599,7 @@ attributes:
       - |
         {
           "type": "value",
-          "content": "Location 'Atlantis' not found",
-          "is_error": true
+          "content": "Sunny, 72°F"
         }
 
     stability: development

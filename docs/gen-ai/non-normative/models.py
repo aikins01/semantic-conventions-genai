@@ -545,10 +545,6 @@ class ToolCallResultValue(BaseModel):
     content: Any = Field(
         description="The value returned by the tool: a string, number, boolean, object, array, or null."
     )
-    is_error: Optional[bool] = Field(
-        default=None,
-        description="Whether the result reports a failure. When `true`, `content` holds the failure as returned.",
-    )
 
     model_config = ConfigDict(extra="allow")
 

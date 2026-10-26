@@ -34,19 +34,6 @@
                 "content": {
                     "description": "The value returned by the tool: a string, number, boolean, object, array, or null.",
                     "title": "Content"
-                },
-                "is_error": {
-                    "anyOf": [
-                        {
-                            "type": "boolean"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": null,
-                    "description": "Whether the result reports a failure. When `true`, `content` holds the failure as returned.",
-                    "title": "Is Error"
                 }
             },
             "required": [
