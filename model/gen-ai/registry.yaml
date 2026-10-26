@@ -582,11 +582,12 @@ attributes:
       a serialized form of a non-string value is available, the
       instrumentation SHOULD make a best effort to deserialize it.
 
-      When the tool reports a failure as its result, for example an error
-      message returned to the model, the instrumentation SHOULD record that
-      result and set `is_error` to `true`. When the tool produces no result,
-      for example because it raised an exception, this attribute SHOULD NOT
-      be set.
+      When the tool, or the instrumented code that calls it, reports a
+      failure as the result, for example by returning an error message to
+      the model, the instrumentation SHOULD record that result and set
+      `is_error` to `true`. When no result is returned, for example because
+      an exception propagates out of the instrumented code, this attribute
+      SHOULD NOT be set.
 
       Consumers SHOULD tolerate `type` values they do not recognize; new
       result types may be added in the future.

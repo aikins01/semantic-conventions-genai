@@ -547,7 +547,7 @@ class ToolCallResultValue(BaseModel):
     )
     is_error: Optional[bool] = Field(
         default=None,
-        description="Whether the tool reported a failure. When `true`, `content` holds the error the tool returned.",
+        description="Whether the result reports a failure. When `true`, `content` holds the failure as returned.",
     )
 
     model_config = ConfigDict(extra="allow")
