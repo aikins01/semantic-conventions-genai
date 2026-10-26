@@ -194,8 +194,11 @@ def run_responses_cost_breakdown():
         "gen_ai.operation.name": "chat",
         "gen_ai.provider.name": provider_name,
         "gen_ai.request.model": request_model,
+        "server.address": _SERVER_ADDRESS,
     }
-    with _reference_tracer.start_as_current_span("chat gpt-4o-mini", attributes=span_attributes) as span:
+    with _reference_tracer.start_as_current_span(
+        "chat gpt-4o-mini", kind=SpanKind.CLIENT, attributes=span_attributes
+    ) as span:
         resp = litellm.responses(
             model=litellm_model,
             input=request_messages,
@@ -210,10 +213,14 @@ def run_responses_cost_breakdown():
         usage_attrs = {
             "gen_ai.usage.input_tokens": usage.prompt_tokens,
             "gen_ai.usage.output_tokens": usage.completion_tokens,
-            "gen_ai.usage.cache_read.input_tokens": usage.prompt_tokens_details.cached_tokens,
-            "gen_ai.usage.cache_write.input_tokens": usage.prompt_tokens_details.cache_creation_tokens,
-            "gen_ai.usage.reasoning.output_tokens": usage.completion_tokens_details.reasoning_tokens,
         }
+        for key, value in (
+            ("gen_ai.usage.cache_read.input_tokens", usage.prompt_tokens_details.cached_tokens),
+            ("gen_ai.usage.cache_write.input_tokens", usage.prompt_tokens_details.cache_creation_tokens),
+            ("gen_ai.usage.reasoning.output_tokens", usage.completion_tokens_details.reasoning_tokens),
+        ):
+            if value:
+                usage_attrs[key] = value
         span.set_attributes(usage_attrs)
         response_attrs.update(usage_attrs)
 

@@ -63,7 +63,7 @@
 | gen_ai.usage.text.cache_read.input_tokens | [google-genai], [vertexai] |
 | gen_ai.usage.text.input_tokens | [google-genai], [vertexai] |
 | gen_ai.usage.text.output_tokens | [google-genai], [vertexai] |
-| server.address | [anthropic], [azure-ai-inference], [openai] |
+| server.address | [anthropic], [azure-ai-inference], [litellm], [openai] |
 
 ## Opt-In
 
